@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"io"
 	"net/http"
 	"time"
@@ -8,14 +9,31 @@ import (
 
 type Response struct {
 	StatusCode int
+	Status     string
 	Duration   time.Duration
 	Body       []byte
+	Size       int
 }
 
-func Get(url string) (*Response, error) {
+func Do(req Request) (*Response, error) {
 	start := time.Now()
 
-	resp, err := http.Get(url)
+	httpReq, err := http.NewRequest(
+		req.Method,
+		req.URL,
+		bytes.NewBuffer(req.Body),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	for key, value := range req.Headers {
+		httpReq.Header.Set(key, value)
+	}
+
+	client := &http.Client{}
+
+	resp, err := client.Do(httpReq)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +47,9 @@ func Get(url string) (*Response, error) {
 
 	return &Response{
 		StatusCode: resp.StatusCode,
+		Status:     resp.Status,
 		Duration:   time.Since(start),
 		Body:       body,
+		Size:       len(body),
 	}, nil
 }
