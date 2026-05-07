@@ -58,15 +58,29 @@ A path starting with `/` resolves against the current environment. A full URL is
 
 Config is stored at `~/.apix/config.json`.
 
+### Authentication
+
+Save a bearer token on the current environment and it is attached to every request that uses an env-relative path.
+
+```sh
+apix env use staging
+apix auth bearer eyJhbGciOi...
+
+apix get /me              # sends Authorization: Bearer eyJ...
+apix get /me -H "Authorization: x"   # user header wins
+apix get https://other.com/me        # no auth — full URL escapes the env
+```
+
 ## Commands
 
-| Command          | Description                                |
-| ---------------- | ------------------------------------------ |
-| `get [url]`      | Send a GET request                         |
-| `post [url]`     | Send a POST request                        |
-| `env list`       | List all saved environments                |
-| `env set`        | Create or update an environment            |
-| `env use`        | Switch to an environment                   |
+| Command            | Description                                 |
+| ------------------ | ------------------------------------------- |
+| `get [url]`        | Send a GET request                          |
+| `post [url]`       | Send a POST request                         |
+| `env list`         | List all saved environments                 |
+| `env set`          | Create or update an environment             |
+| `env use`          | Switch to an environment                    |
+| `auth bearer`      | Save a bearer token on the current env      |
 
 ## Flags
 
@@ -80,8 +94,10 @@ Config is stored at `~/.apix/config.json`.
 ```
 cmd/                 cobra command definitions (get, post, root)
 cmd/env/             env subcommands (list, set, use)
+cmd/auth/            auth subcommands (bearer)
 internal/client/     HTTP request/response types and Do()
-internal/config/     config file load/save and URL resolution
+internal/config/     config load/save and URL + auth resolution
+internal/runner/     orchestrates resolve → request → response
 internal/formatter/  JSON pretty-printing, response output, error helper
 ```
 

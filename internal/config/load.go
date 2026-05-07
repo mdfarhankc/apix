@@ -15,7 +15,7 @@ func Load() (*Config, error) {
 	if err != nil {
 		if os.IsNotExist(err) {
 			return &Config{
-				Environments: make(map[string]Environment),
+				Environments: map[string]Environment{},
 			}, nil
 		}
 		return nil, err
@@ -29,7 +29,7 @@ func Load() (*Config, error) {
 	}
 
 	if config.Environments == nil {
-		config.Environments = make(map[string]Environment)
+		config.Environments = map[string]Environment{}
 	}
 
 	return &config, nil

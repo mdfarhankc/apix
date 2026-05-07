@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/mdfarhankc/apix/cmd/auth"
 	"github.com/mdfarhankc/apix/cmd/env"
 	"github.com/spf13/cobra"
 )
@@ -24,4 +25,5 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(env.Command)
+	rootCmd.AddCommand(auth.Command)
 }
