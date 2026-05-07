@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/mdfarhankc/apix/cmd/env"
 	"github.com/spf13/cobra"
 )
 
@@ -19,4 +20,8 @@ func Execute() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func init() {
+	rootCmd.AddCommand(env.Command)
 }

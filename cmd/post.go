@@ -5,6 +5,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/mdfarhankc/apix/internal/client"
+	"github.com/mdfarhankc/apix/internal/config"
 	"github.com/mdfarhankc/apix/internal/formatter"
 	"github.com/spf13/cobra"
 )
@@ -15,7 +16,11 @@ var postCmd = &cobra.Command{
 	Long:  "Send a POST request with a body (-d) and optional headers (-H). Defaults to JSON.",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		url := args[0]
+		url, err := config.ResolveURL(args[0])
+		if err != nil {
+			formatter.Fail(err)
+		}
+
 		body, _ := cmd.Flags().GetString("data")
 		headerFlags, _ := cmd.Flags().GetStringArray("header")
 		headers := client.ParseHeaders(headerFlags)
@@ -38,8 +43,7 @@ var postCmd = &cobra.Command{
 
 		resp, err := client.Do(request)
 		if err != nil {
-			fmt.Println("Error:", err)
-			return
+			formatter.Fail(err)
 		}
 
 		formatter.PrintResponse(resp)
