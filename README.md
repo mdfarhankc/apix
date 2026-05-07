@@ -40,6 +40,32 @@ apix post https://api.example.com/users \
 
 `Content-Type: application/json` is sent by default and can be overridden via `-H`.
 
+### PUT
+
+```sh
+apix put https://api.example.com/users/42 \
+  -d '{"role":"editor"}'
+```
+
+Same flags as `post`.
+
+### PATCH
+
+```sh
+apix patch https://api.example.com/users/42 \
+  -d '{"role":"editor"}'
+```
+
+Same flags as `post`.
+
+### DELETE
+
+```sh
+apix delete https://api.example.com/users/42
+```
+
+Same flags as `get`.
+
 ### Environments
 
 Save base URLs you hit often and call them by short paths.
@@ -77,6 +103,9 @@ apix get https://other.com/me        # no auth — full URL escapes the env
 | ------------------ | ------------------------------------------- |
 | `get [url]`        | Send a GET request                          |
 | `post [url]`       | Send a POST request                         |
+| `put [url]`        | Send a PUT request                          |
+| `patch [url]`      | Send a PATCH request                        |
+| `delete [url]`     | Send a DELETE request                       |
 | `env list`         | List all saved environments                 |
 | `env set`          | Create or update an environment             |
 | `env use`          | Switch to an environment                    |
@@ -86,8 +115,8 @@ apix get https://other.com/me        # no auth — full URL escapes the env
 
 | Flag             | Commands   | Description           |
 | ---------------- | ---------- | --------------------- |
-| `-d`, `--data`   | `post`     | Request body          |
-| `-H`, `--header` | `get/post` | Header (repeatable)   |
+| `-d`, `--data`   | `post/put/patch`     | Request body          |
+| `-H`, `--header` | `get/post/put/patch/delete` | Header (repeatable)   |
 
 ## Project layout
 
@@ -103,4 +132,4 @@ internal/formatter/  JSON pretty-printing, response output, error helper
 
 ## Status
 
-Early development. Planned: PUT / PATCH / DELETE, request timeouts, `--data @file`, query parameter flag, verbose mode, response header display.
+Early development. Planned: `--data @file`, query parameter flag, verbose mode, response header display.

@@ -12,7 +12,7 @@ func Save(config *Config) error {
 		return err
 	}
 
-	err = os.MkdirAll(filepath.Dir(path), os.ModePerm)
+	err = os.MkdirAll(filepath.Dir(path), 0700)
 	if err != nil {
 		return err
 	}
@@ -22,5 +22,5 @@ func Save(config *Config) error {
 		return err
 	}
 
-	return os.WriteFile(path, data, 0644)
+	return os.WriteFile(path, data, 0600)
 }

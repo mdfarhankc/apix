@@ -31,7 +31,7 @@ func Do(req Request) (*Response, error) {
 		httpReq.Header.Set(key, value)
 	}
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 30 * time.Second}
 
 	resp, err := client.Do(httpReq)
 	if err != nil {

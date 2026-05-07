@@ -11,6 +11,7 @@ import (
 var bearerCmd = &cobra.Command{
 	Use:   "bearer [token]",
 	Short: "Set bearer token",
+	Long:  "Save a bearer token on the current environment. It is sent as Authorization: Bearer ... on requests that use a path like /users.",
 	Args:  cobra.ExactArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
@@ -22,14 +23,12 @@ var bearerCmd = &cobra.Command{
 		}
 
 		if cfg.CurrentEnv == "" {
-			fmt.Println("No environment selected.")
-			return
+			formatter.Fail(fmt.Errorf("no environment selected"))
 		}
 
 		env, exists := cfg.Environments[cfg.CurrentEnv]
 		if !exists {
-			fmt.Println("Current environment not found.")
-			return
+			formatter.Fail(fmt.Errorf("current environment not found"))
 		}
 
 		env.BearerToken = token
