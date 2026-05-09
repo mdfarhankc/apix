@@ -30,6 +30,12 @@ With custom headers:
 apix get https://api.example.com/me -H "Authorization: Bearer $TOKEN"
 ```
 
+With query parameters (repeatable, values are URL-encoded):
+
+```sh
+apix get https://api.github.com/search/repositories -q q=cli -q sort=stars
+```
+
 ### POST
 
 ```sh
@@ -39,6 +45,12 @@ apix post https://api.example.com/users \
 ```
 
 `Content-Type: application/json` is sent by default and can be overridden via `-H`.
+
+Pass `@path` to read the body from a file:
+
+```sh
+apix post https://api.example.com/users -d @user.json
+```
 
 ### PUT
 
@@ -115,8 +127,9 @@ apix get https://other.com/me        # no auth — full URL escapes the env
 
 | Flag             | Commands   | Description           |
 | ---------------- | ---------- | --------------------- |
-| `-d`, `--data`   | `post/put/patch`     | Request body          |
-| `-H`, `--header` | `get/post/put/patch/delete` | Header (repeatable)   |
+| `-d`, `--data`   | `post/put/patch`            | Request body                    |
+| `-H`, `--header` | `get/post/put/patch/delete` | Header (repeatable)             |
+| `-q`, `--query`  | `get/post/put/patch/delete` | Query param `key=val` (repeatable) |
 
 ## Project layout
 
@@ -132,4 +145,4 @@ internal/formatter/  JSON pretty-printing, response output, error helper
 
 ## Status
 
-Early development. Planned: `--data @file`, query parameter flag, verbose mode, response header display.
+Early development. Planned: verbose mode, response header display.

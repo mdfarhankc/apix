@@ -12,10 +12,12 @@ var deleteCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		headerFlags, _ := cmd.Flags().GetStringArray("header")
+		queryFlags, _ := cmd.Flags().GetStringArray("query")
 		runner.Run(runner.Options{
 			Method:     "DELETE",
 			RawURL:     args[0],
 			RawHeaders: headerFlags,
+			RawQuery:   queryFlags,
 		})
 	},
 }
@@ -26,6 +28,12 @@ func init() {
 		"H",
 		[]string{},
 		"Request headers",
+	)
+	deleteCmd.Flags().StringArrayP(
+		"query",
+		"q",
+		[]string{},
+		"Query parameter (key=val)",
 	)
 	rootCmd.AddCommand(deleteCmd)
 }
